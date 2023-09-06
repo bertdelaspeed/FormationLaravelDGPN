@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Policier;
 use App\Http\Requests\StorePolicierRequest;
 use App\Http\Requests\UpdatePolicierRequest;
-use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\DB;
 
 class PolicierController extends Controller
 {
@@ -14,15 +14,14 @@ class PolicierController extends Controller
      */
     public function index()
     {
-        try {
-            // DB::connection()->getPdo();
-            if(DB::connection()->getPdo()){
-                echo 'success';
-            }
+        // try {
+        //     if(DB::connection()->getPdo()){
+        //         echo 'success';
+        //     }
            
-        } catch (\Exception $e) {
-            die("Could not connect to the database.  Please check your configuration. error:" . $e );
-        }
+        // } catch (\Exception $e) {
+        //     die("connexion echec : " . $e );
+        // }
         //
         return view('policiersView.index');
     }
