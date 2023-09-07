@@ -14,6 +14,13 @@ class Policier extends Model
         'prenoms',
         'matricule',
         'email',
-        'telephone'
+        'telephone',
+        'service_id'
     ];
+
+
+    function service() {
+        return $this->belongsTo(Service::class);
+    }
+
 }

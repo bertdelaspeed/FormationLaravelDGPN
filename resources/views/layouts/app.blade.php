@@ -15,9 +15,9 @@
     @include('layouts.navbar')
 
 
-    <main- class='container py-4'>
+    <main class='container py-4'>
         @yield('content')
-    </main->
+    </main>
 </body>
 
 </html>

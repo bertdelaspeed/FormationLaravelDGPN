@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PolicierController;
+use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.app');
+Auth::routes();
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', function () {
+        return view('layouts.app');
+    });
+    
+    Route::resource('CheminPolicier', PolicierController::class);
+    Route::resource('CheminService', ServiceController::class);
+    
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
 
-Route::resource('CheminPolicier', PolicierController::class);

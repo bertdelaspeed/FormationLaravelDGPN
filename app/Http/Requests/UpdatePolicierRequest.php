@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePolicierRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdatePolicierRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +22,23 @@ class UpdatePolicierRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd($this->route('CheminPolicier'));
         return [
-            //
+            'nom' => 'required|string|max:255',
+            'prenoms' => 'required|string|max:255',
+            'matricule' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('policiers')->ignore($this->route('CheminPolicier')), ],
+            'email' => [
+                'required',
+                'string',
+                'max:255',
+                'email',
+                Rule::unique('policiers')->ignore($this->route('CheminPolicier')),
+            ],
+            'telephone' => 'string|max:255',
         ];
     }
 }

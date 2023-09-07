@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Policier;
 use App\Http\Requests\StorePolicierRequest;
 use App\Http\Requests\UpdatePolicierRequest;
+use App\Models\Service;
+
 // use Illuminate\Support\Facades\DB;
 
 class PolicierController extends Controller
@@ -23,7 +25,11 @@ class PolicierController extends Controller
         //     die("connexion echec : " . $e );
         // }
         //
-        return view('policiersView.index');
+
+        $ListPoliciers = Policier::all();
+        $AllServices = Service::all();
+
+        return view('policiersView.index', compact('ListPoliciers', 'AllServices'));
     }
 
     /**
@@ -33,8 +39,8 @@ class PolicierController extends Controller
     {
         //
         // Test database connection
-
-        return view('policiersView.create');
+        $ListServices = Service::all();
+        return view('policiersView.create', compact('ListServices'));
     }
 
     /**
@@ -51,11 +57,12 @@ class PolicierController extends Controller
             'matricule'=> $request->matricule,
             'email'=> $request->email,
             'telephone'=> $request->telephone,
+            'service_id'=> $request->service_id
         ]);
         // $nouveauPolicier = new Policier($request->all());
         $nouveauPolicier->save();
         // return redirect()->route('policier.index');
-        return redirect()->back();
+        return redirect()->back()->with('success','Policier enregistre avec succes');
     }
 
     /**
@@ -69,24 +76,41 @@ class PolicierController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Policier $policier)
+    public function edit(Policier $policier, $id)
     {
-        //
+        $Modifierpolicier = Policier::findorFail($id);
+        $ListServices = Service::all();
+       
+        return view('policiersView.edit', compact('Modifierpolicier','ListServices'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePolicierRequest $request, Policier $policier)
+    public function update(UpdatePolicierRequest $request,  $id)
     {
         //
+        $updatePolicier = Policier::findorFail($id);
+        $updatePolicier->update([
+            'nom'=> $request->nom,
+            'prenoms'=> $request->prenoms,
+            'matricule'=> $request->matricule,
+            'email'=> $request->email,
+            'telephone'=> $request->telephone,
+            'service_id'=> $request->service_id
+        ]);
+
+        return redirect()->back()->with('success','Policier modifie avec succes');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Policier $policier)
+    public function destroy($id)
     {
         //
+        $supprimerPolicier = Policier::findorFail($id);
+        $supprimerPolicier->delete();
+        return redirect()->back()->with('success','Policier supprime avec succes');
     }
 }
